@@ -7,6 +7,6 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_MULTIPLE_DATABASES: customers
+      POSTGRES_MULTIPLE_DATABASES: customers,transactions
     volumes:
       - ./script:/docker-entrypoint-initdb.d
