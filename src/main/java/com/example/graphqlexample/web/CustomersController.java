@@ -80,7 +80,7 @@ public class CustomersController {
     }
 
     @BatchMapping(typeName = "Customer")
-    public Flux<List<Map<Object, Object>>> numberOfRecipientsOfEachCountry(List<Customer> customers) {
+    public Flux<List<Map<String, Object>>> numberOfRecipientsOfEachCountry(List<Customer> customers) {
         return Flux.fromStream(customers.stream())
                 .concatMap(customer -> recipientRepository.countRecipientsByCountry(customer.getId()).collectList());
     }

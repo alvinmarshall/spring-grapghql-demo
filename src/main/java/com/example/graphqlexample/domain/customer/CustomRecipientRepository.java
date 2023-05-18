@@ -5,5 +5,5 @@ import reactor.core.publisher.Flux;
 import java.util.Map;
 
 public interface CustomRecipientRepository {
-    Flux<Map<Object, Object>> countRecipientsByCountry(String customerId);
+    Flux<Map<String, Object>> countRecipientsByCountry(String customerId);
 }
