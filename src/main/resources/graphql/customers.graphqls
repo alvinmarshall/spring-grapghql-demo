@@ -1,0 +1,18 @@
+type Query{
+    customer(id:String): Customer
+    customers: [Customer]
+}
+
+type Customer{
+    id: ID,
+    firstName: String
+    lastName: String
+    email: String,
+    recipients: [Recipient]
+}
+
+type Recipient{
+    id: ID,
+    firstName: String,
+    lastName: String
+}
