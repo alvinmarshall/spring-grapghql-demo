@@ -1,4 +1,4 @@
-package com.example.graphqlexample.data.query;
+package com.example.graphqlexample.domain.customer;
 
 public class CustomerQuery {
     private CustomerQuery() {

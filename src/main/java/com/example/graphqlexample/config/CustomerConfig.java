@@ -1,7 +1,8 @@
-package com.example.graphqlexample.data.config;
+package com.example.graphqlexample.config;
 
 import io.r2dbc.spi.ConnectionFactory;
 import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +17,11 @@ import org.springframework.r2dbc.core.DatabaseClient;
 
 
 @Configuration
-@EnableR2dbcRepositories(entityOperationsRef = "customerEntityTemplate")
+@EnableR2dbcRepositories(
+        entityOperationsRef = "customersEntityTemplate",
+        basePackages = {"com.example.graphqlexample.domain.customer"}
+)
+@Slf4j
 public class CustomerConfig {
     private final ConnectionFactory connectionFactory;
 
@@ -25,14 +30,20 @@ public class CustomerConfig {
     }
 
     @Bean
-    public R2dbcEntityOperations customersEntityTemplate(@Qualifier("customersConnectionFactory") ConnectionFactory connectionFactory) {
-        DefaultReactiveDataAccessStrategy strategy = new DefaultReactiveDataAccessStrategy(PostgresDialect.INSTANCE);
-        DatabaseClient databaseClient = DatabaseClient.builder()
+    @Qualifier(value = "consumerDatabaseClient")
+    public DatabaseClient customerDatabaseClient() {
+        return DatabaseClient.builder()
                 .connectionFactory(connectionFactory)
                 .bindMarkers(PostgresDialect.INSTANCE.getBindMarkersFactory())
                 .build();
+    }
 
-        return new R2dbcEntityTemplate(databaseClient, strategy);
+    @Bean
+    public R2dbcEntityOperations customersEntityTemplate(
+            @Qualifier(value = "consumerDatabaseClient") DatabaseClient client
+    ) {
+        DefaultReactiveDataAccessStrategy strategy = new DefaultReactiveDataAccessStrategy(PostgresDialect.INSTANCE);
+        return new R2dbcEntityTemplate(client, strategy);
     }
 
     @PostConstruct
@@ -42,7 +53,9 @@ public class CustomerConfig {
                 new ClassPathResource("scripts/customers/schema.sql"),
                 new ClassPathResource("scripts/customers/data.sql")
         );
-        databasePopulator.populate(connectionFactory).subscribe();
+        databasePopulator.populate(connectionFactory)
+                .doOnError(throwable -> log.error("init failed {}", throwable.getMessage()))
+                .subscribe();
     }
 
 }
