@@ -1,6 +1,5 @@
-package com.example.graphqlexample.data.repository.customer;
+package com.example.graphqlexample.domain.customer;
 
-import com.example.graphqlexample.domain.customer.Customer;
 import reactor.core.publisher.Mono;
 
 public interface CustomCustomerRepository {

@@ -1,14 +1,13 @@
-type Query{
-    customer(id:String): Customer
-    customers: [Customer]
-}
-
 type Customer{
     id: ID,
     firstName: String
     lastName: String
     email: String,
-    recipients: [Recipient]
+    recipients: [Recipient],
+    totalTransactions: Int,
+    totalTransactionsDelivered: Int,
+    totalTransactionsCancelled: Int,
+    totalTransactionsFailed: Int
 }
 
 type Recipient{

@@ -13,4 +13,10 @@ public class DataSourceConfig {
     public ConnectionFactory customersConnectionFactory() {
         return ConnectionFactories.get("r2dbc:postgres://postgres:postgres@localhost/customers");
     }
+
+    @Bean
+    @Qualifier(value = "transactionsConnectionFactory")
+    public ConnectionFactory transactionsConnectionFactory() {
+        return ConnectionFactories.get("r2dbc:postgres://postgres:postgres@localhost/transactions");
+    }
 }

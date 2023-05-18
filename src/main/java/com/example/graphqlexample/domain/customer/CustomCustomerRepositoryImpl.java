@@ -1,7 +1,6 @@
-package com.example.graphqlexample.data.repository.customer;
+package com.example.graphqlexample.domain.customer;
 
-import com.example.graphqlexample.data.query.CustomerQuery;
-import com.example.graphqlexample.domain.customer.Customer;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
@@ -10,7 +9,7 @@ import reactor.core.publisher.Mono;
 public class CustomCustomerRepositoryImpl implements CustomCustomerRepository {
     private final DatabaseClient client;
 
-    public CustomCustomerRepositoryImpl(DatabaseClient client) {
+    public CustomCustomerRepositoryImpl(@Qualifier("customerDatabaseClient") DatabaseClient client) {
         this.client = client;
     }
 

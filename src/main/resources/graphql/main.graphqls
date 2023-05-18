@@ -1,0 +1,15 @@
+type Query{
+    customer(id:String): Customer
+    customers: [Customer]
+    transaction(id:String): Transactions
+    transactions(customerId:String): [Transactions]
+    totalTransaction(customerId:String): Int
+    totalTransactionByStatus(customerId:String,status:TransactionStatus):Int
+}
+
+enum TransactionStatus{
+    DELIVERED,
+    CANCELLED,
+    FAILED,
+    INITIATED
+}

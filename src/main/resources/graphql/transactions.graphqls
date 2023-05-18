@@ -1,0 +1,15 @@
+type Transactions{
+    id: ID,
+    bonusAmount: Float,
+    exchangeRate: Float,
+    feeAmount: Float,
+    fromAmount: Float,
+    fromCurrency: String,
+    toAmount: Float,
+    toCurrency: String,
+    reason: String,
+    couponCode: String,
+    status: String,
+    senderId:ID,
+    userId:ID,
+}
