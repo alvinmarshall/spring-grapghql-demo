@@ -36,13 +36,13 @@ public class CustomRecipientRepositoryImpl implements CustomRecipientRepository 
     }
 
     @Override
-    public Flux<Map<Object, Object>> countRecipientsByCountry(String customerId) {
+    public Flux<Map<String, Object>> countRecipientsByCountry(String customerId) {
         return client.sql(RecipientQuery.GROUP_CUSTOMER_RECIPIENTS_BY_COUNTRY)
                 .bind("customerId", customerId)
                 .map((row, rowMetadata) -> {
                     Long count = Optional.ofNullable(row.get("count", Long.class)).orElse(0L);
                     String country = Optional.ofNullable(row.get("country", String.class)).orElse("");
-                    return Map.<Object, Object>of("count", count, "country", country);
+                    return Map.<String, Object>of("count", count, "country", country);
                 })
                 .all();
     }
