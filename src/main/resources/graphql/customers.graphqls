@@ -7,11 +7,17 @@ type Customer{
     totalTransactions: Int,
     totalTransactionsDelivered: Int,
     totalTransactionsCancelled: Int,
-    totalTransactionsFailed: Int
+    totalTransactionsFailed: Int,
+    numberOfRecipientsOfEachCountry: [RecipientGroupCountry]
 }
 
 type Recipient{
     id: ID,
     firstName: String,
     lastName: String
+}
+
+type RecipientGroupCountry{
+    count: Int,
+    country: String
 }

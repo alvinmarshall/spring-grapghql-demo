@@ -3,6 +3,7 @@ package com.example.graphqlexample.web;
 
 import com.example.graphqlexample.domain.customer.Customer;
 import com.example.graphqlexample.domain.customer.CustomerRepository;
+import com.example.graphqlexample.domain.customer.RecipientRepository;
 import com.example.graphqlexample.domain.transaction.TransactionRepository;
 import com.example.graphqlexample.domain.transaction.TransactionStatus;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -13,15 +14,22 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class CustomersController {
     private final CustomerRepository customerRepository;
     private final TransactionRepository transactionRepository;
+    private final RecipientRepository recipientRepository;
 
-    public CustomersController(CustomerRepository customerRepository, TransactionRepository transactionRepository) {
+    public CustomersController(
+            CustomerRepository customerRepository,
+            TransactionRepository transactionRepository,
+            RecipientRepository recipientRepository
+    ) {
         this.customerRepository = customerRepository;
         this.transactionRepository = transactionRepository;
+        this.recipientRepository = recipientRepository;
     }
 
     @QueryMapping
@@ -53,18 +61,27 @@ public class CustomersController {
     @BatchMapping(typeName = "Customer")
     public Flux<Long> totalTransactionsDelivered(List<Customer> customers) {
         return Flux.fromStream(customers.stream())
-                .concatMap(customer -> transactionRepository.countStatusByCustomer(TransactionStatus.DELIVERED, customer.getId()));
+                .concatMap(customer ->
+                        transactionRepository.countStatusByCustomer(TransactionStatus.DELIVERED, customer.getId()));
     }
 
     @BatchMapping(typeName = "Customer")
     public Flux<Long> totalTransactionsCancelled(List<Customer> customers) {
         return Flux.fromStream(customers.stream())
-                .concatMap(customer -> transactionRepository.countStatusByCustomer(TransactionStatus.CANCELLED, customer.getId()));
+                .concatMap(customer ->
+                        transactionRepository.countStatusByCustomer(TransactionStatus.CANCELLED, customer.getId()));
     }
 
     @BatchMapping(typeName = "Customer")
     public Flux<Long> totalTransactionsFailed(List<Customer> customers) {
         return Flux.fromStream(customers.stream())
-                .concatMap(customer -> transactionRepository.countStatusByCustomer(TransactionStatus.FAILED, customer.getId()));
+                .concatMap(customer ->
+                        transactionRepository.countStatusByCustomer(TransactionStatus.FAILED, customer.getId()));
+    }
+
+    @BatchMapping(typeName = "Customer")
+    public Flux<List<Map<Object, Object>>> numberOfRecipientsOfEachCountry(List<Customer> customers) {
+        return Flux.fromStream(customers.stream())
+                .flatMap(customer -> recipientRepository.countRecipientsByCountry(customer.getId()).collectList());
     }
 }
