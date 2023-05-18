@@ -39,4 +39,15 @@ values('56d83e00-f31b-4aa0-b3c5-745815a68746',
 'RI',
 '22289',
 'GHA',
-'52c5cc75-f0e0-4b7d-90f3-425da0cc68b6')
+'52c5cc75-f0e0-4b7d-90f3-425da0cc68b6');
+
+insert into recipients(id,first_name,last_name,address_line1,city,province,zip_code,country,user_id)
+values('1a2e8c7e-14c7-4d75-970a-f8c17d976b6a',
+'George',
+'Windler',
+'657 Buckridge Square, North Loganbury, MN 75244',
+'North Loganbury',
+'MN',
+'75244',
+'NGN',
+'52c5cc75-f0e0-4b7d-90f3-425da0cc68b6');
