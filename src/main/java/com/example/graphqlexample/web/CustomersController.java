@@ -6,6 +6,7 @@ import com.example.graphqlexample.domain.customer.CustomerRepository;
 import com.example.graphqlexample.domain.customer.RecipientRepository;
 import com.example.graphqlexample.domain.transaction.TransactionRepository;
 import com.example.graphqlexample.domain.transaction.TransactionStatus;
+import com.example.graphqlexample.dto.customer.CountRecipientCountry;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.BatchMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
@@ -83,7 +84,7 @@ public class CustomersController {
     }
 
     @BatchMapping(typeName = "Customer")
-    public Flux<List<Map<String, Object>>> numberOfRecipientsOfEachCountry(List<Customer> customers) {
+    public Flux<List<CountRecipientCountry>> numberOfRecipientsOfEachCountry(List<Customer> customers) {
         return Flux.fromStream(customers.stream())
                 .concatMap(customer -> recipientRepository.countRecipientsByCountry(customer.getId()).collectList());
     }

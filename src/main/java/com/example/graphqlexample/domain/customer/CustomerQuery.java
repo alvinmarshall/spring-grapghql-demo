@@ -4,8 +4,8 @@ public class CustomerQuery {
     private CustomerQuery() {
     }
 
-    public static String SELECT_QUERY = """
-            SELECT 
+    public static final String SELECT_CUSTOMER_WITH_RECIPIENTS = """
+            SELECT
                 u.id u_id,
                 u.first_name u_first_name,
                 u.last_name u_last_name,
@@ -24,20 +24,21 @@ public class CustomerQuery {
                 u.tier u_tier,
                 u.dob u_dob,
                 
+                ARRAY_AGG(r.id) as r_id,
+                ARRAY_AGG(r.first_name) as r_first_name,
+                ARRAY_AGG(r.last_name) as r_last_name,
+                ARRAY_AGG(r.middle_name) as r_middle_name,
+                ARRAY_AGG(r.email) as r_email,
+                ARRAY_AGG(r.mobile_phone) as r_mobile_phone,
+                ARRAY_AGG(r.city) as r_city,
+                ARRAY_AGG(r.province) as r_province,
+                ARRAY_AGG(r.zip_code) as r_zip_code,
+                ARRAY_AGG(r.address_line1) as r_address_line1,
+                ARRAY_AGG(r.country) as r_country
                 
-                r.id r_id,
-                r.first_name r_first_name,
-                r.last_name r_last_name,
-                r.middle_name r_middle_name,
-                r.email r_email,
-                r.mobile_phone r_mobile_phone,
-                r.city r_city,
-                r.province r_province,
-                r.zip_code r_zip_code,
-                r.address_line1 r_address_line1,
-                r.country r_country                
-                
-             FROM users u
-                LEFT JOIN recipients r ON r.user_id = u.id
+            FROM users u
+            LEFT JOIN recipients r ON u.id = r.user_id
+            WHERE u.id = :id
+            GROUP BY u.id
             """;
 }
