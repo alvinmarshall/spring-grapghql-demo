@@ -5,7 +5,7 @@ public class TransactionQuery {
     }
 
     public static final String SELECT_QUERY = """
-            SELECT 
+            SELECT
                 t.id t_id,
                 t.transaction_id t_transaction_id,
                 t.fee_amount t_fee_amount,

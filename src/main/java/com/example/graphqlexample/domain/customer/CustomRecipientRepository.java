@@ -1,9 +1,8 @@
 package com.example.graphqlexample.domain.customer;
 
+import com.example.graphqlexample.dto.customer.CountRecipientCountry;
 import reactor.core.publisher.Flux;
 
-import java.util.Map;
-
 public interface CustomRecipientRepository {
-    Flux<Map<String, Object>> countRecipientsByCountry(String customerId);
+    Flux<CountRecipientCountry> countRecipientsByCountry(String customerId);
 }
