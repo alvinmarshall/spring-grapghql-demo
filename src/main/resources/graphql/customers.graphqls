@@ -9,12 +9,17 @@ type Customer{
     totalTransactionsCancelled: Int,
     totalTransactionsFailed: Int,
     numberOfRecipientsOfEachCountry: [RecipientGroupCountry]
+    numberOfTransactionsToEachCountry: String
 }
 
 type Recipient{
     id: ID,
     firstName: String,
-    lastName: String
+    lastName: String,
+    country: String,
+    province: String,
+    zipcode: String,
+    addressLine1: String,
 }
 
 type RecipientGroupCountry{
