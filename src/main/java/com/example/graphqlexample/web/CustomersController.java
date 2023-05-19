@@ -13,8 +13,11 @@ import org.springframework.stereotype.Controller;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Controller
 public class CustomersController {
@@ -83,5 +86,31 @@ public class CustomersController {
     public Flux<List<Map<String, Object>>> numberOfRecipientsOfEachCountry(List<Customer> customers) {
         return Flux.fromStream(customers.stream())
                 .concatMap(customer -> recipientRepository.countRecipientsByCountry(customer.getId()).collectList());
+    }
+
+    @BatchMapping(typeName = "Customer")
+    public Flux<HashMap<String, Long>> numberOfTransactionsToEachCountry(List<Customer> customers) {
+        return Flux.fromStream(customers.stream())
+                .concatMap(customer -> transactionRepository
+                        .findTransactionByCustomer(customer.getId())
+                        .collectList()
+                )
+                .concatMap(transactions ->
+                        Flux.fromStream(transactions.stream())
+                                .concatMap(transaction ->
+                                        recipientRepository.findById(transaction.getRecipient().getId())
+                                                .map(recipient -> Map.of("country", recipient.getCountry()))
+                                                .map(stringStringMap -> stringStringMap.values()
+                                                        .stream()
+                                                        .collect(Collectors
+                                                                .groupingBy(Function.identity(), Collectors.counting())
+                                                        )
+                                                )
+                                )
+                                .reduce(new HashMap<>(), (currentMap, e) -> {
+                                    e.keySet().forEach(k -> currentMap.merge(k, 1L, Long::sum));
+                                    return currentMap;
+                                })
+                );
     }
 }

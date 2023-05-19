@@ -1,5 +1,6 @@
 package com.example.graphqlexample.domain.transaction;
 
+import com.example.graphqlexample.domain.customer.Recipient;
 import io.r2dbc.spi.Row;
 import io.r2dbc.spi.RowMetadata;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -35,6 +36,7 @@ public class CustomTransactionRepositoryImpl implements CustomTransactionReposit
                     .reason(row.get("t_reference_number", String.class))
                     .userId(row.get("t_user_id", String.class))
                     .senderId(row.get("t_sender_id", String.class))
+                    .recipient(Recipient.builder().id(row.get("t_recipient_id", String.class)).build())
                     .build();
 
     @Override

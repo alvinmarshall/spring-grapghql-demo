@@ -51,3 +51,14 @@ values('1a2e8c7e-14c7-4d75-970a-f8c17d976b6a',
 '75244',
 'NGN',
 '52c5cc75-f0e0-4b7d-90f3-425da0cc68b6');
+
+insert into recipients(id,first_name,last_name,address_line1,city,province,zip_code,country,user_id)
+values('a94f20f1-e164-45d3-9c5f-0fd164a36b8a',
+'Chelsea',
+'Zboncak',
+'984 Cinda Forks, Roobborough, RI 75771',
+'Roobborough',
+'RI',
+'75771',
+'GHA',
+'52c5cc75-f0e0-4b7d-90f3-425da0cc68b6');
