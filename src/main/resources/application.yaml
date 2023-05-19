@@ -2,3 +2,8 @@ spring:
   graphql:
     graphiql:
       enabled: true
+  datasource:
+    customer:
+      url: r2dbc:postgres://postgres:postgres@localhost/customers
+    transaction:
+      url: r2dbc:postgres://postgres:postgres@localhost/transactions
