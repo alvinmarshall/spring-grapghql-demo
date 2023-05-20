@@ -48,5 +48,6 @@ public class Transaction implements Serializable {
     private String reason;
     @Column(value = "coupon_code")
     private String couponCode;
+    private TransactionType type;
     private Recipient recipient;
 }

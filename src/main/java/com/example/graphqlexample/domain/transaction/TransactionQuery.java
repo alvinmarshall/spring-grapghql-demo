@@ -38,4 +38,16 @@ public class TransactionQuery {
     public static final String COUNT_QUERY = """
             SELECT count(*) as count FROM transactions
             """;
+
+    public static final String COUNT_AND_GROUP_BY_RECIPIENTS = """
+            SELECT count(*) as count,recipient_id FROM transactions GROUP BY recipient_id
+            """;
+
+    public static final String COUNT_TYPE_AND_GROUP_BY_RECIPIENTS = """
+            SELECT count(*) as count,recipient_id FROM transactions WHERE type = :type GROUP BY recipient_id
+            """;
+
+    public static final String SUM_FROM_AMOUNT_AND_GROUP_BY_RECIPIENTS = """
+            SELECT sum(from_amount::numeric) as amount,recipient_id,from_currency FROM transactions GROUP BY recipient_id,from_currency
+            """;
 }

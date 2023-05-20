@@ -20,4 +20,10 @@ public class DataSourceConfig {
     public ConnectionFactory transactionsConnectionFactory(@Value("${spring.datasource.transaction.url}") String conn) {
         return ConnectionFactories.get(conn);
     }
+
+    @Bean
+    @Qualifier(value = "configurationsConnectionFactory")
+    public ConnectionFactory configurationsConnectionFactory(@Value("${spring.datasource.configuration.url}") String conn) {
+        return ConnectionFactories.get(conn);
+    }
 }

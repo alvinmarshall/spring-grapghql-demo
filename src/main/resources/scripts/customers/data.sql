@@ -36,7 +36,7 @@ values('56d83e00-f31b-4aa0-b3c5-745815a68746',
 'Hamill',
 '656 Zelma Landing, Lake Robbiehaven, RI 22289',
 'Lake Robbiehaven',
-'RI',
+'Greater Accra Region',
 '22289',
 'GHA',
 '52c5cc75-f0e0-4b7d-90f3-425da0cc68b6');
@@ -47,9 +47,9 @@ values('1a2e8c7e-14c7-4d75-970a-f8c17d976b6a',
 'Windler',
 '657 Buckridge Square, North Loganbury, MN 75244',
 'North Loganbury',
-'MN',
+'Cross River',
 '75244',
-'NGN',
+'NGA',
 '52c5cc75-f0e0-4b7d-90f3-425da0cc68b6');
 
 insert into recipients(id,first_name,last_name,address_line1,city,province,zip_code,country,user_id)
@@ -58,7 +58,18 @@ values('a94f20f1-e164-45d3-9c5f-0fd164a36b8a',
 'Zboncak',
 '984 Cinda Forks, Roobborough, RI 75771',
 'Roobborough',
-'RI',
+'Ashanti Region',
 '75771',
 'GHA',
 '52c5cc75-f0e0-4b7d-90f3-425da0cc68b6');
+
+insert into recipients(id,first_name,last_name,address_line1,city,province,zip_code,country,user_id)
+values('7ffb0ed6-c4bc-4934-a8e7-aa63dae0e85d',
+'Dania',
+'Harvey',
+'3752 Rosamond Forks, Agustintown, GA 37920',
+'Agustintown',
+'Ashanti Region',
+'75771',
+'GHA',
+'c9d7ffca-3a71-4260-bbde-efafce584f79');

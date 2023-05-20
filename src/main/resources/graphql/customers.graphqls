@@ -4,11 +4,11 @@ type Customer{
     lastName: String
     email: String,
     recipients: [Recipient],
-    totalTransactions: Int,
-    totalTransactionsDelivered: Int,
-    totalTransactionsCancelled: Int,
-    totalTransactionsFailed: Int,
-    numberOfRecipientsOfEachCountry: [RecipientGroupCountry]
+    totalTransactions: Long,
+    totalTransactionsDelivered: Long,
+    totalTransactionsCancelled: Long,
+    totalTransactionsFailed: Long,
+    numberOfRecipientsOfEachCountry: [GroupCountry]
     numberOfTransactionsToEachCountry: String
 }
 
@@ -22,7 +22,7 @@ type Recipient{
     addressLine1: String,
 }
 
-type RecipientGroupCountry{
-    count: Int,
+type GroupCountry{
+    count: Long,
     country: String
 }

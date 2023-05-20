@@ -1,0 +1,35 @@
+type Country{
+    countryIso3code:String
+    countryIso2code:String
+    name:String
+    phoneCode:String
+    currency:String
+    states: [State],
+    totalAmountOfTransactionCountry:[SumTransaction]
+    numberOfACHTransactionCountry:[CountTransaction]
+    numberOfInstantTransactionCountry:[CountTransaction]
+}
+
+type State{
+    id:ID
+    name:String
+    code:String
+    totalTransaction: [CountTransaction]
+    numberOfACHTransactionState:[CountTransaction]
+    numberOfInstantTransactions:[CountTransaction]
+    totalAmountOfTransactionState:[SumTransaction]
+    numberOfInstantTransactionState:[SumTransaction]
+}
+
+type CountTransaction{
+    count:Long
+    state: String
+    country:String
+}
+
+type SumTransaction{
+    amount:BigDecimal
+    state: String
+    country:String
+    currency:String
+}
