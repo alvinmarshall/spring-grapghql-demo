@@ -5,11 +5,8 @@ type Query{
     transactions(customerId:String): [Transactions]
     totalTransaction(customerId:String): Int
     totalTransactionByStatus(customerId:String,status:TransactionStatus):Int
+    numberOfTransactionsByType(type: TransactionType):Int
+    countryByIso3Code(iso3Code:String): Country
+    countries: [Country]
 }
 
-enum TransactionStatus{
-    DELIVERED,
-    CANCELLED,
-    FAILED,
-    INITIATED
-}
