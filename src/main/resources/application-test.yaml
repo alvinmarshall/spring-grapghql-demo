@@ -1,0 +1,9 @@
+spring:
+  graphql:
+    graphiql:
+      enabled: true
+  datasource:
+    customer:
+      url: r2dbc:h2:file:///~/mem_data/customers;USER=sa;PASSWORD=
+    transaction:
+      url: r2dbc:h2:file:///~/mem_data/transactions;USER=sa;PASSWORD=
