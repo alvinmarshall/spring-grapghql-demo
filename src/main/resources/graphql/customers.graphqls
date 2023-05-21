@@ -9,7 +9,7 @@ type Customer{
     totalTransactionsCancelled: Long,
     totalTransactionsFailed: Long,
     numberOfRecipientsOfEachCountry: [GroupCountry]
-    numberOfTransactionsToEachCountry: String
+    numberOfTransactionsToEachCountry: [GroupCountry]
 }
 
 type Recipient{
