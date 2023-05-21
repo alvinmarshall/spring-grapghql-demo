@@ -6,6 +6,7 @@ import com.example.graphqlexample.domain.customer.CustomerRepository;
 import com.example.graphqlexample.domain.customer.RecipientRepository;
 import com.example.graphqlexample.domain.transaction.TransactionRepository;
 import com.example.graphqlexample.domain.transaction.TransactionStatus;
+import com.example.graphqlexample.dto.CountItem;
 import com.example.graphqlexample.dto.customer.CountRecipientCountry;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.BatchMapping;
@@ -14,11 +15,7 @@ import org.springframework.stereotype.Controller;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Controller
 public class CustomersController {
@@ -90,28 +87,24 @@ public class CustomersController {
     }
 
     @BatchMapping(typeName = "Customer")
-    public Flux<HashMap<String, Long>> numberOfTransactionsToEachCountry(List<Customer> customers) {
+    public Flux<List<CountItem>> numberOfTransactionsToEachCountry(List<Customer> customers) {
         return Flux.fromStream(customers.stream())
                 .concatMap(customer -> transactionRepository
                         .findTransactionByCustomer(customer.getId())
+                        .concatMap(transaction -> {
+                            String recipientId = transaction.getRecipient().getId();
+                            return recipientRepository.findById(recipientId)
+                                    .map(recipient -> CountItem.builder().count(1L)
+                                            .country(recipient.getCountry())
+                                            .build()
+                                    );
+                        })
+                        .groupBy(CountItem::getCountry)
+                        .concatMap(groupedFlux -> groupedFlux.reduce((countItem, countItem2) -> {
+                            long newCount = countItem.getCount() + countItem2.getCount();
+                            return CountItem.builder().count(newCount).country(countItem.getCountry()).build();
+                        }))
                         .collectList()
-                )
-                .concatMap(transactions ->
-                        Flux.fromStream(transactions.stream())
-                                .concatMap(transaction ->
-                                        recipientRepository.findById(transaction.getRecipient().getId())
-                                                .map(recipient -> Map.of("country", recipient.getCountry()))
-                                                .map(stringStringMap -> stringStringMap.values()
-                                                        .stream()
-                                                        .collect(Collectors
-                                                                .groupingBy(Function.identity(), Collectors.counting())
-                                                        )
-                                                )
-                                )
-                                .reduce(new HashMap<>(), (currentMap, e) -> {
-                                    e.keySet().forEach(k -> currentMap.merge(k, 1L, Long::sum));
-                                    return currentMap;
-                                })
                 );
     }
 }
