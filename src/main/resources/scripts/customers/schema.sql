@@ -16,6 +16,7 @@ create TABLE if not exists users
     nationality                     VARCHAR(50),
     kyc_status                      VARCHAR(50),
     tier                            VARCHAR(50),
+    events                          jsonb,
     dob                             date,
     CONSTRAINT pk_users PRIMARY KEY (id)
 );
@@ -36,10 +37,11 @@ create TABLE if not exists recipients
     country                  VARCHAR(50),
     occupation               VARCHAR(100),
     sender_relationship      VARCHAR(100),
-    available_payout_methods JSON,
+    available_payout_methods jsonb,
     user_id                  VARCHAR(255),
     CONSTRAINT pk_recipients PRIMARY KEY (id)
 );
 
 alter table recipients
     add CONSTRAINT FK_RECIPIENTS_ON_USER FOREIGN KEY (user_id) REFERENCES users (id);
+

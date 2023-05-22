@@ -2,28 +2,31 @@ package com.example.graphqlexample.mapper.customer;
 
 import com.example.graphqlexample.domain.customer.Customer;
 import com.example.graphqlexample.domain.customer.Recipient;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.r2dbc.spi.Row;
 import io.r2dbc.spi.RowMetadata;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.r2dbc.convert.MappingR2dbcConverter;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Component
+@Slf4j
 public class CustomerRowMapper implements BiFunction<Row, RowMetadata, Customer> {
     private final MappingR2dbcConverter converter;
+    private final ObjectMapper mapper;
 
-    public CustomerRowMapper(MappingR2dbcConverter converter) {
+    public CustomerRowMapper(MappingR2dbcConverter converter, ObjectMapper mapper) {
         this.converter = converter;
+        this.mapper = mapper;
     }
-
 
     @Override
     public Customer apply(Row row, RowMetadata rowMetadata) {
@@ -44,12 +47,25 @@ public class CustomerRowMapper implements BiFunction<Row, RowMetadata, Customer>
                 .externalProviderId(row.get("u_external_provider_id", String.class))
                 .tier(row.get("u_tier", String.class))
                 .dob(row.get("u_dob", LocalDate.class))
+                .events(getEvent(row))
                 .kycStatus(row.get("u_kyc_status", String.class))
                 .recipients(getRecipients(row))
                 .build();
     }
 
+    private List<String> getEvent(Row row) {
+        try {
+            String uEvents = row.get("u_events", String.class);
+            String[] readValue = mapper.readValue(uEvents, String[].class);
+            return Arrays.stream(readValue).flatMap(s -> Arrays.stream(s.split(","))).toList();
+        } catch (JsonProcessingException e) {
+            log.error("failed to parse json-array: {}", e.getMessage());
+        }
+        return Collections.emptyList();
+    }
+
     private Set<Recipient> getRecipients(Row row) {
+        if (!row.getMetadata().contains("r_id")) return Collections.emptySet();
         String[] rIds = Optional.ofNullable(converter.getConversionService()
                         .convert(row.get("r_id", Object.class), String[].class))
                 .orElse(new String[]{});

@@ -1,10 +1,11 @@
-insert into users (id,first_name,last_name,email,gender,kyc_status,tier,dob,city,address_line1,nationality,state,zipcode,external_provider_id)
+insert into users (id,first_name,last_name,email,gender,kyc_status,events,tier,dob,city,address_line1,nationality,state,zipcode,external_provider_id)
 values ('52c5cc75-f0e0-4b7d-90f3-425da0cc68b6',
 'Janae',
 'Crist',
 'mafalda.lesch@hotmail.com',
 'Female',
 'VERIFIED',
+'["EXTERNAL_ACCOUNT_CREATED","AUTHENTICATION_ACCOUNT_CREATED","EXTERNAL_ACCOUNT_UPDATED","SENDER_KYC_VERIFIED"]',
 'LEVEL1',
 '1994-01-01',
 'Kierstenstad',
@@ -14,14 +15,31 @@ values ('52c5cc75-f0e0-4b7d-90f3-425da0cc68b6',
 '15881',
 '1059a695-e6e8-4907-8dd3-915d1c44dcb6');
 
-insert into users (id,first_name,last_name,email,gender,kyc_status,tier,dob,city,address_line1,nationality,state,zipcode,external_provider_id)
+insert into users (id,first_name,last_name,email,gender,kyc_status,events,tier,dob,city,address_line1,nationality,state,zipcode,external_provider_id)
 values ('c9d7ffca-3a71-4260-bbde-efafce584f79',
 'Lance',
 'Kassulke',
 'celestina.jacobson@gmail.com',
 'Male',
 'VERIFIED',
+'["EXTERNAL_ACCOUNT_CREATED","AUTHENTICATION_ACCOUNT_CREATED","EXTERNAL_ACCOUNT_UPDATED","SENDER_KYC_VERIFIED"]',
 'LEVEL1',
+'1974-04-27',
+'Arthurview',
+'91911 Willms Mountain, Arthurview, DE 02894',
+'USA',
+'DE',
+'02894',
+'4a8a23b3-761d-42cb-a176-52f4dbe7ef34');
+
+insert into users (id,first_name,last_name,email,gender,kyc_status,events,dob,city,address_line1,nationality,state,zipcode,external_provider_id)
+values ('17200b00-9477-4b47-9987-393de8e7d32d',
+'Lakesha',
+'Reichert',
+'kira.nader@hotmail.com',
+'Male',
+'UNVERIFIED',
+'["EXTERNAL_ACCOUNT_CREATED","AUTHENTICATION_ACCOUNT_CREATED"]',
 '1974-04-27',
 'Arthurview',
 '91911 Willms Mountain, Arthurview, DE 02894',

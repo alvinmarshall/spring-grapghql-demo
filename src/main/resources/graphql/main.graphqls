@@ -8,5 +8,6 @@ type Query{
     numberOfTransactionsByType(type: TransactionType):Int
     countryByIso3Code(iso3Code:String): Country
     countries: [Country]
+    tiers:[CustomerTier]
 }
 

@@ -11,6 +11,7 @@ public class GraphQlConfig {
     public RuntimeWiringConfigurer runtimeWiringConfigurer() {
         return wiringBuilder -> wiringBuilder
                 .scalar(ExtendedScalars.GraphQLBigDecimal)
-                .scalar(ExtendedScalars.GraphQLLong);
+                .scalar(ExtendedScalars.GraphQLLong)
+                .scalar(ExtendedScalars.Date);
     }
 }

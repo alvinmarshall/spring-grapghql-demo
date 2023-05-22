@@ -1,15 +1,29 @@
 type Customer{
     id: ID,
-    firstName: String
-    lastName: String
+    firstName: String,
+    lastName: String,
     email: String,
+    kycStatus: String,
+    events: [String],
+    dob: Date,
+    addressLine1: String,
+    state: String,
+    city:String,
+    tier:String,
+    mobilePhone:String,
+    zipcode:String,
+    gender:String,
+    externalProviderId:String,
+    nationality:String,
+    middleName:String,
+    mobileCountryCode:String,
     recipients: [Recipient],
     totalTransactions: Long,
     totalTransactionsDelivered: Long,
     totalTransactionsCancelled: Long,
     totalTransactionsFailed: Long,
-    numberOfRecipientsOfEachCountry: [GroupCountry]
-    numberOfTransactionsToEachCountry: [GroupCountry]
+    numberOfRecipientsOfEachCountry: [CountItem],
+    numberOfTransactionsToEachCountry: [CountItem]
 }
 
 type Recipient{
@@ -20,9 +34,22 @@ type Recipient{
     province: String,
     zipcode: String,
     addressLine1: String,
+    city: String,
+    mobilePhone: String,
+    middleName: String,
+    email: String,
 }
 
-type GroupCountry{
+type CountItem{
     count: Long,
     country: String
+    state: String
+}
+type CountTier{
+    count: Long
+}
+
+type CustomerTier{
+    name:String
+    numberOfCustomers: [CountTier]
 }

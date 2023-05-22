@@ -49,6 +49,12 @@ public class ConfigurationConfig {
     @PostConstruct
     public void initialize() {
         ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
+        String name = connectionFactory.getMetadata().getName();
+        if (name.equals("H2")) {
+            databasePopulator.addScripts(
+                    new ClassPathResource("scripts/configurations/init.sql")
+            );
+        }
         databasePopulator.addScripts(
                 new ClassPathResource("scripts/configurations/schema.sql"),
                 new ClassPathResource("scripts/configurations/data.sql")
