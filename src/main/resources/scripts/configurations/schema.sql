@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS countries
     name              VARCHAR(100),
     phone_code        VARCHAR(50),
     country_id        VARCHAR(100),
-    currency          JSON,
+    currency          jsonb,
     CONSTRAINT pk_countries PRIMARY KEY (country_iso3_code)
 );
 

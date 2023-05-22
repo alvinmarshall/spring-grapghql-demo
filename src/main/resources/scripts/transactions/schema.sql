@@ -34,6 +34,6 @@ create TABLE transactions
     recipient_payout_method    VARCHAR(255),
     type                       VARCHAR(50),
     recipient_payer_id         INTEGER,
-    events                     JSON,
+    events                     jsonb,
     CONSTRAINT pk_transactions PRIMARY KEY (id)
 );
