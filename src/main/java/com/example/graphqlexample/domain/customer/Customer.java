@@ -1,5 +1,7 @@
 package com.example.graphqlexample.domain.customer;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.impl.StringCollectionSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,6 +13,7 @@ import org.springframework.data.relational.core.mapping.Table;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Table(name = "users")
@@ -39,6 +42,8 @@ public class Customer implements Serializable {
     private String zipcode;
     private LocalDate dob;
     private String tier;
+    @JsonSerialize(using = StringCollectionSerializer.class)
+    private List<String> events;
     @Column(value = "kyc_status")
     private String kycStatus;
     @Column(value = "mobile_phone")

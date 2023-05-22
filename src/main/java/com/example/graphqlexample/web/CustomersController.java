@@ -4,10 +4,13 @@ package com.example.graphqlexample.web;
 import com.example.graphqlexample.domain.customer.Customer;
 import com.example.graphqlexample.domain.customer.CustomerRepository;
 import com.example.graphqlexample.domain.customer.RecipientRepository;
+import com.example.graphqlexample.domain.customer.Tier;
 import com.example.graphqlexample.domain.transaction.TransactionRepository;
 import com.example.graphqlexample.domain.transaction.TransactionStatus;
 import com.example.graphqlexample.dto.CountItem;
+import com.example.graphqlexample.dto.Item;
 import com.example.graphqlexample.dto.customer.CountRecipientCountry;
+import com.example.graphqlexample.dto.customer.CountTier;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.BatchMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -35,7 +39,7 @@ public class CustomersController {
 
     @QueryMapping
     public Flux<Customer> customers() {
-        return customerRepository.findAll();
+        return customerRepository.findAllCustomers();
     }
 
     @QueryMapping
@@ -91,7 +95,7 @@ public class CustomersController {
         return Flux.fromStream(customers.stream())
                 .concatMap(customer -> transactionRepository
                         .findTransactionByCustomer(customer.getId())
-                        .concatMap(transaction -> {
+                        .flatMap(transaction -> {
                             String recipientId = transaction.getRecipient().getId();
                             return recipientRepository.findById(recipientId)
                                     .map(recipient -> CountItem.builder().count(1L)
@@ -100,11 +104,27 @@ public class CustomersController {
                                     );
                         })
                         .groupBy(CountItem::getCountry)
-                        .concatMap(groupedFlux -> groupedFlux.reduce((countItem, countItem2) -> {
+                        .flatMap(groupedFlux -> groupedFlux.reduce((countItem, countItem2) -> {
                             long newCount = countItem.getCount() + countItem2.getCount();
                             return CountItem.builder().count(newCount).country(countItem.getCountry()).build();
                         }))
                         .collectList()
                 );
+    }
+
+    @QueryMapping
+    public Flux<Item> tiers() {
+        return Flux.fromStream(Arrays.stream(Tier.values()).map(tier -> Item.builder().name(tier.name()).build()));
+    }
+
+    @BatchMapping(typeName = "CustomerTier")
+    public Flux<List<CountTier>> numberOfCustomers(List<Item> tiers) {
+        Flux<CountTier> countTierFlux = customerRepository.countCustomersTier();
+        return Flux.fromIterable(tiers)
+                .concatMap(tier -> countTierFlux
+                        .filter(countTier -> tier.getName().equals(countTier.getTier()))
+                        .collectList()
+                );
+
     }
 }

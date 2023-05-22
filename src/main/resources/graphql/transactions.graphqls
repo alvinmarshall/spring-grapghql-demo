@@ -1,6 +1,3 @@
-scalar BigDecimal
-scalar Long
-
 type Transactions{
     id: ID,
     bonusAmount: BigDecimal,

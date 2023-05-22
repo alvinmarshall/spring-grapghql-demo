@@ -6,26 +6,25 @@ type Country{
     currency:String
     states: [State],
     totalAmountOfTransactionCountry:[SumTransaction]
-    numberOfACHTransactionCountry:[CountTransaction]
-    numberOfInstantTransactionCountry:[CountTransaction]
+    numberOfACHTransactionCountry:[CountItem]
+    numberOfInstantTransactionCountry:[CountItem]
+    numberOfKycVerifiedCustomersCountry:[CountItem]
+    numberOfKycUnVerifiedCustomersCountry:[CountItem]
 }
 
 type State{
     id:ID
     name:String
     code:String
-    totalTransaction: [CountTransaction]
-    numberOfACHTransactionState:[CountTransaction]
-    numberOfInstantTransactions:[CountTransaction]
+    totalTransaction: [CountItem]
+    numberOfACHTransactionState:[CountItem]
+    numberOfInstantTransactions:[CountItem]
     totalAmountOfTransactionState:[SumTransaction]
-    numberOfInstantTransactionState:[SumTransaction]
+    numberOfInstantTransactionState:[CountItem]
+    numberOfKycVerifiedCustomersState:[CountItem]
+    numberOfKycUnVerifiedCustomersState:[CountItem]
 }
 
-type CountTransaction{
-    count:Long
-    state: String
-    country:String
-}
 
 type SumTransaction{
     amount:BigDecimal
